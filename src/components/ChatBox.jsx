@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, Bot, User, Loader } from "lucide-react";
 
-const ChatBox = () => {
+const ChatBox = ({ onCodeResponse, setEditorOpen }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -17,6 +17,22 @@ const ChatBox = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Function to extract code blocks from markdown
+  const extractCodeBlocks = (text) => {
+    const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
+    const codeBlocks = [];
+    let match;
+
+    while ((match = codeBlockRegex.exec(text)) !== null) {
+      codeBlocks.push({
+        language: match[1] || 'javascript',
+        code: match[2].trim()
+      });
+    }
+
+    return codeBlocks;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,9 +72,34 @@ const ChatBox = () => {
       };
 
       setMessages(prev => [...prev, aiMessage]);
+
+      // Extract code blocks and send to editor if found
+      const codeBlocks = extractCodeBlocks(data.reply);
+      if (codeBlocks.length > 0) {
+        // Take the first code block for now
+        const { language, code } = codeBlocks[0];
+        
+        // Create a new file name based on language
+        const extension = language === 'javascript' ? 'js' : 
+                         language === 'python' ? 'py' :
+                         language === 'typescript' ? 'ts' : 'txt';
+        
+        const fileName = `generated-${Date.now()}.${extension}`;
+        
+        // Send to editor
+        onCodeResponse({
+          name: fileName,
+          language,
+          content: code,
+          type: 'file'
+        });
+        
+        // Open the editor
+        setEditorOpen(true);
+      }
+
     } catch (error) {
       console.error("Error:", error);
-      // Add error message
       const errorMessage = {
         id: Date.now() + 1,
         text: "Sorry, I encountered an error. Please try again.",
@@ -73,7 +114,6 @@ const ChatBox = () => {
 
   return (
     <div className="flex flex-col h-[70vh]">
-      {/* Chat Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <motion.div
@@ -84,7 +124,6 @@ const ChatBox = () => {
               message.sender === "user" ? "flex-row-reverse" : ""
             }`}
           >
-            {/* Avatar */}
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center ${
                 message.sender === "user"
@@ -101,7 +140,6 @@ const ChatBox = () => {
               )}
             </div>
 
-            {/* Message */}
             <div
               className={`max-w-[80%] p-3 rounded-lg ${
                 message.sender === "user"
@@ -116,7 +154,6 @@ const ChatBox = () => {
           </motion.div>
         ))}
 
-        {/* Typing Indicator */}
         {isTyping && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -132,11 +169,9 @@ const ChatBox = () => {
           </motion.div>
         )}
 
-        {/* Scroll Helper */}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Form */}
       <form onSubmit={handleSubmit} className="p-4 border-t border-gray-800">
         <div className="flex gap-2">
           <input

@@ -148,3 +148,218 @@ body {
 .animate-glow {
   animation: glow 2s ease-in-out infinite;
 }
+
+/* VS Code-like styling improvements */
+
+/* Base theme colors */
+:root {
+  --vscode-bg: #1e1e1e;
+  --vscode-sidebar-bg: #252526;
+  --vscode-titlebar-bg: #3c3c3c;
+  --vscode-panel-border: #1e1e1e;
+  --vscode-active-tab: #1e1e1e;
+  --vscode-inactive-tab: #2d2d2d;
+  --vscode-tab-border: #252526;
+  --vscode-hover-bg: #264f78;
+}
+
+/* Main container */
+.editor-full-container {
+  background-color: var(--vscode-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title bar styling */
+.editor-titlebar {
+  background-color: var(--vscode-titlebar-bg);
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+.editor-titlebar button {
+  -webkit-app-region: no-drag;
+}
+
+/* Activity bar (left sidebar icons) */
+.activity-bar {
+  width: 48px;
+  background-color: var(--vscode-sidebar-bg);
+  border-right: 1px solid var(--vscode-panel-border);
+}
+
+.activity-bar-item {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #858585;
+  cursor: pointer;
+  position: relative;
+}
+
+.activity-bar-item:hover {
+  color: #ffffff;
+}
+
+.activity-bar-item.active {
+  color: #ffffff;
+}
+
+.activity-bar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #007acc;
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 240px;
+  background-color: var(--vscode-sidebar-bg);
+  border-right: 1px solid var(--vscode-panel-border);
+}
+
+/* File explorer improvements */
+.file-explorer {
+  padding: 8px 0;
+}
+
+.file-explorer-item {
+  padding: 3px 8px 3px 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #cccccc;
+  font-size: 13px;
+}
+
+.file-explorer-item:hover {
+  background-color: var(--vscode-hover-bg);
+}
+
+.file-explorer-item.active {
+  background-color: #37373d;
+}
+
+/* Tab styling */
+.editor-tab {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  background-color: var(--vscode-inactive-tab);
+  border-right: 1px solid var(--vscode-tab-border);
+  padding: 0 10px;
+  font-size: 13px;
+  color: #969696;
+  cursor: pointer;
+}
+
+.editor-tab.active {
+  background-color: var(--vscode-active-tab);
+  color: #ffffff;
+  border-bottom: 1px solid #007acc;
+}
+
+.editor-tab:hover {
+  background-color: var(--vscode-hover-bg);
+}
+
+/* Editor area */
+.editor-area {
+  flex: 1;
+  background-color: var(--vscode-bg);
+  overflow: hidden;
+}
+
+/* Status bar improvements */
+.status-bar {
+  height: 22px;
+  background-color: #007acc;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 12px;
+}
+
+.status-bar-item {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  height: 100%;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Terminal panel */
+.terminal-panel {
+  background-color: var(--vscode-bg);
+  border-top: 1px solid var(--vscode-panel-border);
+}
+
+.terminal-header {
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--vscode-sidebar-bg);
+}
+
+.terminal-content {
+  padding: 8px;
+  font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+  font-size: 13px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--vscode-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #424242;
+  border: 3px solid var(--vscode-bg);
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4f4f4f;
+}
+
+/* Icon and text spacing */
+.icon-with-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Minimap styling */
+.editor-minimap {
+  width: 60px;
+  border-left: 1px solid var(--vscode-panel-border);
+  background-color: var(--vscode-bg);
+}
+
+/* Active line highlight */
+.monaco-editor .current-line {
+  border: 2px solid #282828;
+  background-color: #2a2a2a;
+}
+
+/* Selection highlight */
+.monaco-editor .selected-text {
+  background-color: #264f78;
+}

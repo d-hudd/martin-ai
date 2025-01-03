@@ -17,6 +17,13 @@ const CodeEditor = dynamic(() => import("@/components/CodeEditor"), {
 
 export default function Home() {
   const [editorOpen, setEditorOpen] = useState(false);
+  const [codeFile, setCodeFile] = useState(null);
+
+  // Handle code response from ChatBox
+  const handleCodeResponse = (file) => {
+    setCodeFile(file);
+    // Editor opening is now handled by ChatBox
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-blue-900 to-black">
@@ -41,14 +48,18 @@ export default function Home() {
 
           {/* Chat Interface */}
           <div className="p-4">
-            <ChatBox />
+            <ChatBox 
+              onCodeResponse={handleCodeResponse}
+              setEditorOpen={setEditorOpen}
+            />
           </div>
         </div>
 
         {/* Code Editor Modal */}
         <CodeEditor 
           isOpen={editorOpen} 
-          onClose={() => setEditorOpen(false)} 
+          onClose={() => setEditorOpen(false)}
+          initialFile={codeFile} // Pass the code file to the editor
         />
       </div>
     </main>

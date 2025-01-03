@@ -25,7 +25,28 @@ const nextConfig = {
       },
     },
     serverActions: true, // Enable server actions for FormData handling
-  }
+  },
+  // Add API configuration
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+    externalResolver: true,
+  },
+  // Add security headers
+  async headers() {
+    return [
+      {
+        source: '/api/files/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-store, max-age=0',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
